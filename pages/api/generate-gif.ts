@@ -50,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const publicPath = path.join(process.cwd(), 'public', url.split('/').pop()!)
       const image = await loadImage(publicPath)
       ctx.drawImage(image, 0, 0, 217, 217);
-      encoder.addFrame(ctx as unknown as CanvasRenderingContext2D);
+      encoder.addFrame(ctx as unknown as Buffer);
     }
     
     encoder.finish();
