@@ -54,7 +54,7 @@ export default function GifGenerator() {
             src={gifUrl}
             alt="gift"
             width={180}
-            height={38}
+            height={180}
             priority
           />)
         }

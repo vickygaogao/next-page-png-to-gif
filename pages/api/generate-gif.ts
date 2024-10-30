@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import GIFEncoder from 'gif-encoder-2';
-import { createCanvas, loadImage } from 'canvas';
+import { createCanvas, loadImage } from '@napi-rs/canvas';
 import fs from "fs";
 import path from 'path'
 
