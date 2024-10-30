@@ -27,17 +27,14 @@ export default function GifGenerator() {
         })
       })
 
-      const blob = await response.blob();
-      console.log('----- generateGift blob', blob)
-      const url = URL.createObjectURL(blob);
-      setGifUrl(url);
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create GIF");
+      }
 
-      // const data = await response.json();
-      // if (data.gif) {
-      //   setGifUrl(data.gif);
-      // } else {
-      //   console.error('Failed to generate GIF');
-      // }
+      // 添加时间戳来避免缓存
+      setGifUrl(`/output.gif?t=${new Date().getTime()}`);
+
 
     } catch (error) {
       console.error('Error generating GIF:', error)

@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import GIFEncoder from 'gifencoder';
 import { createCanvas, loadImage } from 'canvas';
+import fs from "fs";
 import path from 'path'
 
 interface RequestBody {
@@ -37,11 +38,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
+    const publicDir = path.join(process.cwd(), "public");
+    if (!fs.existsSync(publicDir)) {
+      fs.mkdirSync(publicDir, { recursive: true });
+    }
+
+    const outputPath = path.join(publicDir, "output.gif");
+    const writeStream = fs.createWriteStream(outputPath);
+
     // 创建 GIF 编码器
     const encoder = new GIFEncoder(217, 217); // 设置 GIF 尺寸
     
     // 创建输出流
-    // encoder.createReadStream();
+    encoder.createReadStream().pipe(writeStream);;
     // const chunks: any[] = [];
     
     // buffer.on('data', (chunk) => chunks.push(chunk));
@@ -67,13 +76,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     encoder.finish();
 
-    const buffer = encoder.out.getData();
+    // const buffer = encoder.out.getData();
+    
     
     // 将 buffer 转换为 base64
     // const buffer64 = Buffer.concat(chunks).toString('base64');
     
     res.setHeader('Content-Type', 'image/gif');
-    res.status(200).send(buffer);
+    return res.status(200).json({ success: true });
   } catch (error){
     console.error(error);
     res.status(500).json({ message: 'Error generating GIF', error });
