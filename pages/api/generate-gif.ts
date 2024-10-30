@@ -4,24 +4,6 @@ import { createCanvas, loadImage } from 'canvas';
 import fs from "fs";
 import path from 'path'
 
-interface RequestBody {
-  imageUrls: string[]; // Array of base64 encoded images
-}
-
-// // 定义允许的 HTTP 方法
-// export const dynamic = 'force-dynamic';
-
-// // 处理 OPTIONS 请求（用于 CORS）
-// export async function OPTIONS() {
-//     return new NextResponse(null, {
-//         status: 200,
-//         headers: {
-//             'Access-Control-Allow-Methods': 'POST',
-//             'Access-Control-Allow-Headers': 'Content-Type',
-//         },
-//     });
-// }
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     res.status(405).send({ message: 'Only POST requests are allowed' });
@@ -72,13 +54,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     
     encoder.finish();
-
-    // const buffer = encoder.out.getData();
-    
-    
-    // 将 buffer 转换为 base64
-    // const buffer64 = Buffer.concat(chunks).toString('base64');
-    
     res.setHeader('Content-Type', 'image/gif');
     return res.status(200).json({ success: true });
   } catch (error){
