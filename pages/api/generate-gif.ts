@@ -28,16 +28,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
 
-  const { imageUrls } = req.body as RequestBody;
-
-  console.log('----- imageUrls', req.body, imageUrls)
-
-  if (!imageUrls || imageUrls.length !== 3) {
-    res.status(400).send({ message: 'Please provide exactly three images.' });
-    return;
-  }
-
   try {
+    const imageUrls = [
+      `/camera2.png`,
+      `/contact.png`,
+      `/doc.png`
+    ]
+
     const publicDir = path.join(process.cwd(), "public");
     if (!fs.existsSync(publicDir)) {
       fs.mkdirSync(publicDir, { recursive: true });

@@ -8,11 +8,7 @@ export default function GifGenerator() {
   const [ isLoading, setIsLoading ] = useState(false)
   const [ gifUrl, setGifUrl ] = useState('')
 
-  const imageUrls = [
-    `/camera2.png`,
-    `/contact.png`,
-    `/doc.png`
-  ]
+
 
   const generateGift = async () => {
     setIsLoading(true)
@@ -22,9 +18,7 @@ export default function GifGenerator() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          imageUrls
-        })
+        body: JSON.stringify({}),
       })
 
       const data = await response.json();
