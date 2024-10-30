@@ -22,14 +22,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       fs.mkdirSync(publicDir, { recursive: true });
     }
 
-    const outputPath = path.join(publicDir, "output.gif");
-    const writeStream = fs.createWriteStream(outputPath);
+    // const outputPath = path.join(publicDir, "output.gif");
+    // const writeStream = fs.createWriteStream(outputPath);
 
     // 创建 GIF 编码器
     const encoder = new GIFEncoder(217, 217); // 设置 GIF 尺寸
     
     // 创建输出流
-    encoder.createReadStream().pipe(writeStream);;
+    // encoder.createReadStream().pipe(writeStream);;
     // const chunks: any[] = [];
     
     // buffer.on('data', (chunk) => chunks.push(chunk));
@@ -50,12 +50,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const publicPath = path.join(process.cwd(), 'public', url.split('/').pop()!)
       const image = await loadImage(publicPath)
       ctx.drawImage(image, 0, 0, 217, 217);
-      encoder.addFrame(ctx as unknown as Buffer);
+      encoder.addFrame(ctx as unknown as CanvasRenderingContext2D);
     }
     
     encoder.finish();
+    const buffer = encoder.out.getData();
+
     res.setHeader('Content-Type', 'image/gif');
-    return res.status(200).json({ success: true });
+    res.status(200).send(buffer);
   } catch (error){
     console.error(error);
     res.status(500).json({ message: 'Error generating GIF', error });

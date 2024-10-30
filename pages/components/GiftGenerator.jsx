@@ -21,13 +21,13 @@ export default function GifGenerator() {
         body: JSON.stringify({}),
       })
 
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to create GIF");
-      }
+      // 获取 GIF Blob
+      const gifBlob = await response.blob();
+      
+      const gifUrl = URL.createObjectURL(gifBlob);
 
       // 添加时间戳来避免缓存
-      setGifUrl(`/output.gif?t=${new Date().getTime()}`);
+      setGifUrl(gifUrl);
 
 
     } catch (error) {
